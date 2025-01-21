@@ -68,16 +68,16 @@ wss.on('connection', (ws, request) => {
       }
 
       try {
-        // Create a new chat message
+        
         await prismaClient.chat.create({
           data: {
             roomId: Number(roomId),
             message,
-            userId, // The user sending the message
+            userId, 
           },
         });
 
-        // Broadcast message to users in the room
+       
         users.forEach((user) => {
           if (user.rooms.includes(roomId)) {
             user.ws.send(
@@ -99,7 +99,7 @@ wss.on('connection', (ws, request) => {
   ws.on('close', () => {
     const index = users.findIndex((user) => user.ws === ws);
     if (index !== -1) {
-      users.splice(index, 1); // Remove the user when they disconnect
+      users.splice(index, 1); 
     }
   });
 });
