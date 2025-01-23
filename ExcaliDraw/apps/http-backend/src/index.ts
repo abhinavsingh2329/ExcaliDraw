@@ -96,24 +96,26 @@ try {
   })
 }
 })
-app.get("/chats/:roomId",async (req,res)=>{
+app.get("/chats/:roomId", async (req, res) => {
   try {
-    const roomId = Number (req.params.roomId);
+    const roomId = Number(req.params.roomId);
     const messages = await prismaClient.chat.findMany({
-    where:{
-      roomId:roomId
-    },
-    orderBy:{
-      id:"desc"
-    },
-    take:50
-  }) 
+      where: {
+        roomId: roomId
+      },
+      orderBy: {
+        id: "desc"
+      },
+      take: 50
+    });
+
+    res.json({ messages });
   } catch (error) {
-    res.json({
-      messages:[]
-    })
+    console.error("Error fetching messages:", error);
+    res.json({ messages: [] });
   }
-})
+});
+
 
 app.get("/room/:slug", async (req,res)=>{
   const slug = req.params.slug;
@@ -124,6 +126,7 @@ app.get("/room/:slug", async (req,res)=>{
   });
   res.json({
     room
-  })
+    })
+    console.log(room);
 })
 app.listen(8000);
